@@ -14,7 +14,7 @@ class FileEncryptionController extends Controller
         ]);
 
         $gpg = new gnupg();
-        $gpg->addencryptkey('GPG_RECIPIENT_KEY_ID');
+        $gpg->addencryptkey(env('GPG_RECIPIENT_KEY_ID'));
 
         $fileContent = file_get_contents($request->file('file_to_encrypt')->getPathName());
         $encrypted = $gpg->encrypt($fileContent);
@@ -32,7 +32,7 @@ class FileEncryptionController extends Controller
         ]);
 
         $gpg = new gnupg();
-        $gpg->adddecryptkey('GPG_PRIVATE_KEY_ID', 'GPG_PASSPHRASE');
+        $gpg->adddecryptkey(env('GPG_PRIVATE_KEY_ID'), env('GPG_PASSPHRASE'));
 
         $fileContent = file_get_contents($request->file('file_to_decrypt')->getPathName());
         $decrypted = $gpg->decrypt($fileContent);
