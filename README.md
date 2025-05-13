@@ -1,66 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# GPG Encryption Tool
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, intuitive, and visually appealing Single Page Application (SPA) for GPG file encryption and decryption, built with Vue.js, TypeScript, and Laravel.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Modern SPA Interface**: Built with Vue.js and TypeScript for a responsive and interactive user experience
+- **Dual Operations**: Clearly distinct sections for file encryption and decryption
+- **Drag-and-Drop File Handling**: Intuitive file upload with drag-and-drop functionality
+- **Real-time Progress Tracking**: Visual feedback for file upload and processing
+- **Elegant Notifications**: User-friendly success and error messages
+- **Responsive Design**: Works well on all screen sizes
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Screenshots
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+![GPG Encryption Tool](screenshot.png)
 
-## Learning Laravel
+## Technology Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Frontend**:
+  - Vue.js 3 with Composition API
+  - TypeScript
+  - Tailwind CSS for styling
+  - Axios for API requests
+  - Vite for build tooling
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Backend**:
+  - Laravel
+  - PHP GnuPG extension for encryption/decryption
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+### Prerequisites
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- PHP 8.2 or higher
+- Laravel 12.1.1.0
+- PHP GnuPG extension (`ext-gnupg`)
+- GnuPG installed on the server
+- Node.js and npm
 
-### Premium Partners
+### Setup Steps
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   cd gpg-encryption-project
+   ```
 
-## Contributing
+2. Install PHP dependencies:
+   ```bash
+   composer install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Install JavaScript dependencies:
+   ```bash
+   npm install
+   ```
 
-## Code of Conduct
+4. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. Configure GPG keys in your `.env` file:
+   ```
+   GPG_RECIPIENT_KEY_ID=your_recipient_key_id
+   GPG_PRIVATE_KEY_ID=your_private_key_id
+   GPG_PASSPHRASE=your_passphrase
+   ```
 
-## Security Vulnerabilities
+6. Build the frontend assets:
+   ```bash
+   npm run build
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7. Start the development server:
+   ```bash
+   php artisan serve
+   ```
+
+8. Visit `http://localhost:8000` in your browser to use the application.
+
+## Development
+
+For development with hot-reloading:
+
+```bash
+npm run dev
+```
+
+## Usage
+
+1. **Encrypting Files**:
+   - Drag and drop a file onto the encryption panel or click to select a file
+   - Click the "Encrypt File" button
+   - Wait for the encryption process to complete
+   - Download the encrypted file from the success notification
+
+2. **Decrypting Files**:
+   - Drag and drop a .gpg file onto the decryption panel or click to select a file
+   - Click the "Decrypt File" button
+   - Wait for the decryption process to complete
+   - Download the decrypted file from the success notification
+
+## Security Considerations
+
+- Store your GPG keys securely and never commit them to version control
+- Use environment variables for key IDs and passphrases
+- Regularly rotate your GPG keys according to your security policy
+- Consider implementing authentication to restrict access to the application
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License - see the LICENSE file for details.
