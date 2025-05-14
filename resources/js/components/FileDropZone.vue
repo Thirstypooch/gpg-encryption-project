@@ -17,9 +17,9 @@
     />
 
     <div v-if="!selectedFile">
-      <svg class="mx-auto h-12 w-12 text-secondary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-      </svg>
+      <div class="mx-auto h-12 w-12 text-secondary-400 flex items-center justify-center text-3xl">
+        ↑
+      </div>
       <p class="mt-2 text-sm text-secondary-600">
         <span class="font-medium text-primary-600 hover:text-primary-500">
           Upload a file
@@ -33,9 +33,9 @@
 
     <div v-else class="text-left">
       <div class="flex items-center">
-        <svg class="h-8 w-8 text-secondary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
+        <div class="h-8 w-8 text-secondary-400 flex items-center justify-center text-xl">
+          📄
+        </div>
         <div class="ml-4">
           <h4 class="text-sm font-medium text-secondary-900">
             {{ selectedFile.name }}
@@ -48,9 +48,9 @@
           @click.stop="clearFile"
           class="ml-auto p-1 rounded-full text-secondary-500 hover:bg-secondary-100 hover:text-secondary-700 focus:outline-none"
         >
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <div class="h-5 w-5 flex items-center justify-center">
+            ✕
+          </div>
         </button>
       </div>
     </div>
