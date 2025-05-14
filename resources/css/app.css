@@ -1,3 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    @apply bg-dark-800 text-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold;
+  }
+
+  code, pre {
+    @apply font-mono;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-lg p-6 backdrop-blur-sm bg-dark-700/80 border border-dark-600 shadow-lg transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply shadow-neon-primary border-primary-500/50;
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-800;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-500 hover:shadow-neon-primary focus:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-600 text-white hover:bg-secondary-500 hover:shadow-neon-secondary focus:ring-secondary-500;
+  }
+
+  .btn-accent {
+    @apply bg-accent-600 text-white hover:bg-accent-500 hover:shadow-neon-accent focus:ring-accent-500;
+  }
+
+  .drop-zone {
+    @apply border-2 border-dashed border-dark-400 rounded-lg p-6 text-center cursor-pointer transition-all duration-300 bg-dark-800/50 backdrop-blur-sm;
+  }
+
+  .drop-zone:hover {
+    @apply border-cyber-blue bg-dark-700/50;
+  }
+
+  .drop-zone-active {
+    @apply border-cyber-green bg-dark-700/50 shadow-neon-cyber-green;
+  }
+}
+
+/* Cyber grid background */
+.cyber-background {
+  @apply bg-dark-800 bg-cyber-grid bg-grid-lg relative overflow-hidden;
+}
+
+.cyber-background::before {
+  content: '';
+  @apply absolute inset-0 bg-cyber-gradient opacity-30;
+}
+
+/* Glowing text effect */
+.text-glow {
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* Animated border */
+.animated-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-border::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+  animation: animate-border 3s linear infinite;
+}
+
+@keyframes animate-border {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Terminal text animation */
+.terminal-text::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

@@ -1,13 +1,15 @@
 <template>
-  <div class="card bg-gradient-to-br from-white to-primary-50 border border-primary-100">
+  <div class="card hover:shadow-neon-cyber-green">
     <div class="flex items-center mb-6">
-      <div class="h-8 w-8 text-primary-600 flex items-center justify-center text-2xl">
-        🔒
+      <div class="h-10 w-10 text-cyber-green flex items-center justify-center text-2xl rounded-full bg-dark-600 border border-cyber-green/50">
+        <span class="text-glow">🔒</span>
       </div>
-      <h2 class="ml-2 text-xl font-bold text-secondary-900">Encrypt File</h2>
+      <h2 class="ml-3 text-xl sm:text-2xl font-bold text-white">
+        <span class="text-cyber-green text-glow">Encrypt</span> File
+      </h2>
     </div>
 
-    <p class="text-secondary-600 mb-6">
+    <p class="text-gray-300 mb-6 text-sm sm:text-base">
       Securely encrypt your files using GPG encryption. The encrypted file can only be decrypted with the correct key.
     </p>
 
@@ -21,29 +23,30 @@
       <ProgressBar
         :progress="uploadProgress"
         label="Uploading file..."
+        color="primary"
       />
     </div>
 
     <div v-if="processingFile" class="mt-6">
-      <div class="flex items-center justify-center space-x-2 text-primary-700">
+      <div class="flex items-center justify-center space-x-2 text-cyber-green">
         <div class="animate-spin h-5 w-5 text-center">
           ⟳
         </div>
-        <span>Encrypting file...</span>
+        <span class="text-glow">Encrypting file...</span>
       </div>
     </div>
 
     <button
       @click="encryptFile"
       :disabled="!selectedFile || isProcessing"
-      class="btn btn-primary w-full mt-6"
+      class="btn btn-primary w-full mt-6 group"
       :class="{ 'opacity-50 cursor-not-allowed': !selectedFile || isProcessing }"
     >
       <span v-if="isProcessing">Processing...</span>
-      <span v-else>Encrypt File</span>
+      <span v-else class="group-hover:text-glow transition-all duration-300">Encrypt File</span>
     </button>
 
-    <div class="fixed bottom-4 right-4 z-50">
+    <div class="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
       <Notification
         :show="showNotification"
         :type="notificationType"

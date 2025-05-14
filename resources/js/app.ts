@@ -1,8 +1,8 @@
+import '../css/app.css';
 import './bootstrap';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
-import '../css/app.css';
 
 // Create the Vue application
 const app = createApp(App);

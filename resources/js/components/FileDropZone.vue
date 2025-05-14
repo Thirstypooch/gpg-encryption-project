@@ -16,39 +16,39 @@
       :accept="accept"
     />
 
-    <div v-if="!selectedFile">
-      <div class="mx-auto h-12 w-12 text-secondary-400 flex items-center justify-center text-3xl">
-        ↑
+    <div v-if="!selectedFile" class="py-4">
+      <div class="mx-auto h-14 w-14 text-cyber-blue flex items-center justify-center text-3xl mb-2">
+        <span class="text-glow">↑</span>
       </div>
-      <p class="mt-2 text-sm text-secondary-600">
-        <span class="font-medium text-primary-600 hover:text-primary-500">
+      <p class="mt-2 text-sm sm:text-base text-gray-300">
+        <span class="font-medium text-cyber-blue hover:text-glow transition-all duration-300">
           Upload a file
         </span>
         or drag and drop
       </p>
-      <p class="mt-1 text-xs text-secondary-500">
+      <p class="mt-1 text-xs sm:text-sm text-gray-400">
         {{ acceptText }}
       </p>
     </div>
 
     <div v-else class="text-left">
       <div class="flex items-center">
-        <div class="h-8 w-8 text-secondary-400 flex items-center justify-center text-xl">
-          📄
+        <div class="h-10 w-10 text-cyber-purple flex items-center justify-center text-xl bg-dark-600 rounded-md border border-cyber-purple/30">
+          <span class="text-glow">📄</span>
         </div>
         <div class="ml-4">
-          <h4 class="text-sm font-medium text-secondary-900">
+          <h4 class="text-sm sm:text-base font-medium text-white">
             {{ selectedFile.name }}
           </h4>
-          <p class="text-xs text-secondary-500">
+          <p class="text-xs sm:text-sm text-gray-400">
             {{ formatFileSize(selectedFile.size) }}
           </p>
         </div>
         <button
           @click.stop="clearFile"
-          class="ml-auto p-1 rounded-full text-secondary-500 hover:bg-secondary-100 hover:text-secondary-700 focus:outline-none"
+          class="ml-auto p-1 rounded-full text-gray-400 hover:bg-dark-600 hover:text-cyber-pink focus:outline-none transition-colors duration-300"
         >
-          <div class="h-5 w-5 flex items-center justify-center">
+          <div class="h-6 w-6 flex items-center justify-center">
             ✕
           </div>
         </button>

@@ -1,15 +1,25 @@
 <template>
   <div class="w-full">
-    <div class="flex justify-between mb-1">
-      <span class="text-sm font-medium text-secondary-700">{{ label }}</span>
-      <span class="text-sm font-medium text-secondary-700">{{ progress }}%</span>
+    <div class="flex justify-between mb-2">
+      <span class="text-xs sm:text-sm font-medium text-gray-300">{{ label }}</span>
+      <span class="text-xs sm:text-sm font-medium" :class="textColorClass">{{ progress }}%</span>
     </div>
-    <div class="w-full bg-secondary-200 rounded-full h-2.5">
+    <div class="w-full bg-dark-600 rounded-full h-2.5 overflow-hidden relative">
+      <!-- Track glow effect -->
+      <div class="absolute inset-0 opacity-20 blur-sm" :class="progressColorClass"></div>
+
+      <!-- Actual progress bar -->
       <div
-        class="h-2.5 rounded-full transition-all duration-300 ease-out"
+        class="h-2.5 rounded-full transition-all duration-300 ease-out relative z-10"
         :class="progressColorClass"
         :style="{ width: `${progress}%` }"
-      ></div>
+      >
+        <!-- Leading edge glow -->
+        <div
+          class="absolute right-0 top-0 bottom-0 w-2 blur-sm"
+          :class="progressColorClass"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -32,25 +42,47 @@ export default defineComponent({
     color: {
       type: String,
       default: 'primary',
-      validator: (value: string) => ['primary', 'success', 'warning', 'error'].includes(value)
+      validator: (value: string) => ['primary', 'secondary', 'accent', 'success', 'warning', 'error'].includes(value)
     }
   },
   setup(props) {
     const progressColorClass = computed(() => {
       switch (props.color) {
+        case 'secondary':
+          return 'bg-cyber-blue';
+        case 'accent':
+          return 'bg-cyber-purple';
         case 'success':
-          return 'bg-green-600';
+          return 'bg-cyber-green';
         case 'warning':
-          return 'bg-yellow-500';
+          return 'bg-cyber-yellow';
         case 'error':
-          return 'bg-red-600';
+          return 'bg-cyber-pink';
         default:
-          return 'bg-primary-600';
+          return 'bg-primary-500';
+      }
+    });
+
+    const textColorClass = computed(() => {
+      switch (props.color) {
+        case 'secondary':
+          return 'text-cyber-blue';
+        case 'accent':
+          return 'text-cyber-purple';
+        case 'success':
+          return 'text-cyber-green';
+        case 'warning':
+          return 'text-cyber-yellow';
+        case 'error':
+          return 'text-cyber-pink';
+        default:
+          return 'text-primary-500';
       }
     });
 
     return {
-      progressColorClass
+      progressColorClass,
+      textColorClass
     };
   }
 });

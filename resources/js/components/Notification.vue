@@ -7,30 +7,47 @@
     leave-from-class="opacity-100"
     leave-to-class="opacity-0"
   >
-    <div v-if="show" class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+    <div
+      v-if="show"
+      class="max-w-sm w-full backdrop-blur-md bg-dark-700/90 shadow-lg rounded-lg pointer-events-auto overflow-hidden border"
+      :class="notificationBorderClass"
+    >
       <div class="p-4">
         <div class="flex items-start">
           <div class="flex-shrink-0">
             <!-- Success Icon -->
-            <div v-if="type === 'success'" class="h-6 w-6 text-green-400 flex items-center justify-center text-xl">
+            <div
+              v-if="type === 'success'"
+              class="h-8 w-8 flex items-center justify-center text-xl rounded-full bg-dark-600 border"
+              :class="['text-cyber-green text-glow', 'border-cyber-green/30']"
+            >
               ✓
             </div>
             <!-- Error Icon -->
-            <div v-else-if="type === 'error'" class="h-6 w-6 text-red-400 flex items-center justify-center text-xl">
+            <div
+              v-else-if="type === 'error'"
+              class="h-8 w-8 flex items-center justify-center text-xl rounded-full bg-dark-600 border"
+              :class="['text-cyber-pink text-glow', 'border-cyber-pink/30']"
+            >
               ⚠
             </div>
             <!-- Info Icon -->
-            <div v-else class="h-6 w-6 text-blue-400 flex items-center justify-center text-xl">
+            <div
+              v-else
+              class="h-8 w-8 flex items-center justify-center text-xl rounded-full bg-dark-600 border"
+              :class="['text-cyber-blue text-glow', 'border-cyber-blue/30']"
+            >
               ℹ
             </div>
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
-            <p class="text-sm font-medium text-secondary-900">{{ title }}</p>
-            <p v-if="message" class="mt-1 text-sm text-secondary-500">{{ message }}</p>
-            <div v-if="downloadUrl" class="mt-3">
+            <p class="text-sm sm:text-base font-medium text-white">{{ title }}</p>
+            <p v-if="message" class="mt-1 text-xs sm:text-sm text-gray-300">{{ message }}</p>
+            <div v-if="downloadUrl" class="mt-4">
               <a
                 :href="downloadUrl"
-                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                class="inline-flex items-center px-3 py-2 border border-transparent text-xs sm:text-sm font-medium rounded-md shadow-sm text-white bg-cyber-blue hover:bg-cyber-blue/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyber-blue transition-all duration-300 hover:shadow-neon-cyber-blue"
+                download
               >
                 Download File
               </a>
@@ -39,10 +56,10 @@
           <div class="ml-4 flex-shrink-0 flex">
             <button
               @click="$emit('close')"
-              class="bg-white rounded-md inline-flex text-secondary-400 hover:text-secondary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              class="rounded-md inline-flex text-gray-400 hover:text-white focus:outline-none transition-colors duration-300"
             >
               <span class="sr-only">Close</span>
-              <div class="h-5 w-5 flex items-center justify-center">
+              <div class="h-6 w-6 flex items-center justify-center">
                 ✕
               </div>
             </button>
@@ -54,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
   name: 'Notification',
@@ -80,6 +97,22 @@ export default defineComponent({
       type: String,
       default: ''
     }
+  },
+  setup(props) {
+    const notificationBorderClass = computed(() => {
+      switch (props.type) {
+        case 'success':
+          return 'border-cyber-green/50 shadow-neon-cyber-green';
+        case 'error':
+          return 'border-cyber-pink/50 shadow-neon-cyber-pink';
+        default:
+          return 'border-cyber-blue/50 shadow-neon-cyber-blue';
+      }
+    });
+
+    return {
+      notificationBorderClass
+    };
   },
   emits: ['close']
 });
