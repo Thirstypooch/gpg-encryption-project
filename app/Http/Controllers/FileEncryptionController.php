@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileEncryptionController extends Controller
 {
+    /**
+     * Encrypts the uploaded file and sets the download name by appending .gpg.
+     */
     public function encrypt(Request $request): BinaryFileResponse
     {
         $request->validate([
@@ -17,8 +20,7 @@ class FileEncryptionController extends Controller
         ]);
 
         $originalFile = $request->file('file_to_encrypt');
-        $originalFileName = pathinfo($originalFile->getClientOriginalName(), PATHINFO_FILENAME);
-        $downloadFilename = $originalFileName . '.gpg';
+        $downloadFilename = $originalFile->getClientOriginalName() . '.gpg';
 
         $gpg = new gnupg();
         $gpg->addencryptkey(env('GPG_RECIPIENT_KEY_ID'));
@@ -29,10 +31,11 @@ class FileEncryptionController extends Controller
         $encryptedFilePath = storage_path('app/' . uniqid('encrypted_', true) . '.gpg');
         File::put($encryptedFilePath, $encrypted);
 
+        // Download the file with the correct name and content type, then delete it from the server
         return response()->download(
             $encryptedFilePath,
             $downloadFilename,
-            ['Content-Type' => 'application/octet-stream']
+            ['Content-Type' => 'application/pgp-encrypted']
         )->deleteFileAfterSend();
     }
 
@@ -43,9 +46,13 @@ class FileEncryptionController extends Controller
         ]);
 
         $encryptedFile = $request->file('file_to_decrypt');
-        $originalFileName = pathinfo($encryptedFile->getClientOriginalName(), PATHINFO_FILENAME);
-        // Assume the decrypted file is a text file, adjust if necessary
-        $downloadFilename = $originalFileName . '.txt';
+        $encryptedFilename = $encryptedFile->getClientOriginalName();
+
+        $downloadFilename = preg_replace('/\.gpg$/i', '', $encryptedFilename);
+
+        if ($downloadFilename === $encryptedFilename) {
+            return response()->json(['error' => 'Invalid file. A .gpg file is required.'], 422);
+        }
 
         $gpg = new gnupg();
         $gpg->adddecryptkey(env('GPG_PRIVATE_KEY_ID'), env('GPG_PASSPHRASE'));
@@ -54,16 +61,15 @@ class FileEncryptionController extends Controller
         $decrypted = $gpg->decrypt($fileContent);
 
         if ($decrypted === false) {
-            return response()->json(['error' => 'Decryption failed. Check your key and passphrase.'], 422);
+            return response()->json(['error' => 'Decryption failed. Please check your key and passphrase.'], 422);
         }
 
-        $decryptedFilePath = storage_path('app/' . uniqid('decrypted_', true) . '.txt');
+        $decryptedFilePath = storage_path('app/' . uniqid('decrypted_', true));
         File::put($decryptedFilePath, $decrypted);
 
         return response()->download(
             $decryptedFilePath,
-            $downloadFilename,
-            ['Content-Type' => 'text/plain']
+            $downloadFilename
         )->deleteFileAfterSend();
     }
 }
