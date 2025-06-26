@@ -25,6 +25,10 @@ RUN docker-php-ext-install pdo pdo_mysql zip
 # Set up Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# === NEW: Copy the Apache virtual host configuration ===
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+RUN a2enmod rewrite
+
 # Set the working directory
 WORKDIR /var/www/html
 
