@@ -7,6 +7,7 @@ FROM php:8.2-apache
 # - Node.js and npm for frontend assets
 RUN apt-get update && apt-get install -y \
     gnupg \
+    gosu \
     libgpgme-dev \
     git \
     zip \

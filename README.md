@@ -13,7 +13,10 @@ A modern, intuitive, and visually appealing Single Page Application (SPA) for GP
 
 ## Screenshots
 
-![GPG Encryption Tool](screenshot.png)
+![GPG Encryption Interface](screenshots/gpg-encryption.png)
+
+![Encrypted File](screenshots/encrypted.png)
+
 
 ## Technology Stack
 
