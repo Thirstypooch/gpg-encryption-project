@@ -28,6 +28,10 @@ class FileEncryptionController extends Controller
         $fileContent = File::get($originalFile->getPathName());
         $encrypted = $gpg->encrypt($fileContent);
 
+        if ($encrypted === false) {
+            return response()->json(['error' => 'Encryption failed. Please ensure the recipient GPG key is valid and imported correctly on the server.'], 500);
+        };
+
         $encryptedFilePath = storage_path('app/' . uniqid('encrypted_', true) . '.gpg');
         File::put($encryptedFilePath, $encrypted);
 
