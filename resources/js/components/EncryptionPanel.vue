@@ -46,7 +46,7 @@
             <span v-else class="group-hover:text-glow transition-all duration-300">Encrypt File</span>
         </button>
 
-        <div class="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
+        <div class="fixed inset-x-4 bottom-4 z-50 sm:left-auto sm:bottom-6 sm:right-6 sm:w-full sm:max-w-sm">
             <!-- Pass the downloadFilename prop to the Notification component -->
             <Notification
                 :show="showNotification"

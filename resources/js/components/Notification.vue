@@ -9,7 +9,7 @@
     >
         <div
             v-if="show"
-            class="w-11/12 max-w-lg backdrop-blur-md bg-dark-700/90 shadow-lg rounded-lg pointer-events-auto overflow-hidden border"
+            class="w-full backdrop-blur-md bg-dark-700/90 shadow-lg rounded-lg pointer-events-auto overflow-hidden border"
             :class="notificationBorderClass"
         >
             <div class="p-4">
