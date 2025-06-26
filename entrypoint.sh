@@ -10,7 +10,6 @@ chown -R www-data:www-data "$GNUPGHOME"
 # Import the GPG public key
 if [ -n "$GPG_PUBLIC_KEY" ]; then
     echo "Importing GPG public key..."
-    # The 'gpg' command will now use the GNUPGHOME directory we defined
     echo -e "$GPG_PUBLIC_KEY" | gpg --batch --yes --import
 fi
 
@@ -25,6 +24,10 @@ if [ -n "$GPG_RECIPIENT_KEY_ID" ]; then
     echo "Trusting GPG key: $GPG_RECIPIENT_KEY_ID"
     echo -e "5\ny\n" | gpg --batch --command-fd 0 --edit-key "$GPG_RECIPIENT_KEY_ID" trust
 fi
+
+# === THE FIX: Clear config cache before running migrations ===
+php artisan config:clear
+# =============================================================
 
 # Run database migrations
 php artisan migrate --force

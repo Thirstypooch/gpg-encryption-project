@@ -13,8 +13,14 @@ class FileEncryptionController extends Controller
     // Add this helper method
     private function initializeGpg(): gnupg
     {
-        // Tell PHP where to find the GPG keyring
-        putenv('GNUPGHOME=/var/www/html/.gnupg');
+        // Check for a custom GPG home directory from the environment file
+        $gpgHome = env('GPG_HOME_DIR');
+        if ($gpgHome) {
+            putenv("GNUPGHOME=$gpgHome");
+        }
+
+        // The constructor will now use the custom path on Render,
+        // or the default path on your local machine.
         return new gnupg();
     }
 
