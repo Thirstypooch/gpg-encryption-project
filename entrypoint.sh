@@ -26,6 +26,7 @@ if [ -n "$GPG_RECIPIENT_KEY_ID" ]; then
     echo -e "5\ny\n" | gpg --batch --command-fd 0 --edit-key "$GPG_RECIPIENT_KEY_ID" trust
 fi
 
+chown -R www-data:www-data /root/.gnupg
 # Run database migrations
 php artisan migrate --force
 
