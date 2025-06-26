@@ -10,10 +10,15 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileEncryptionController extends Controller
 {
-    /**
-     * Encrypts the uploaded file and sets the download name by appending .gpg.
-     */
-    public function encrypt(Request $request): BinaryFileResponse
+    // Add this helper method
+    private function initializeGpg(): gnupg
+    {
+        // Tell PHP where to find the GPG keyring
+        putenv('GNUPGHOME=/var/www/html/.gnupg');
+        return new gnupg();
+    }
+
+    public function encrypt(Request $request): BinaryFileResponse|JsonResponse // Added JsonResponse for error
     {
         $request->validate([
             'file_to_encrypt' => 'required|file'
@@ -22,20 +27,21 @@ class FileEncryptionController extends Controller
         $originalFile = $request->file('file_to_encrypt');
         $downloadFilename = $originalFile->getClientOriginalName() . '.gpg';
 
-        $gpg = new gnupg();
+        // Use the helper method
+        $gpg = $this->initializeGpg();
         $gpg->addencryptkey(env('GPG_RECIPIENT_KEY_ID'));
 
         $fileContent = File::get($originalFile->getPathName());
         $encrypted = $gpg->encrypt($fileContent);
 
+        // Your existing error handling for this is now crucial
         if ($encrypted === false) {
-            return response()->json(['error' => 'Encryption failed. Please ensure the recipient GPG key is valid and imported correctly on the server.'], 500);
-        };
+            return response()->json(['error' => 'Encryption failed. GPG error: ' . $gpg->geterror()], 500);
+        }
 
         $encryptedFilePath = storage_path('app/' . uniqid('encrypted_', true) . '.gpg');
         File::put($encryptedFilePath, $encrypted);
 
-        // Download the file with the correct name and content type, then delete it from the server
         return response()->download(
             $encryptedFilePath,
             $downloadFilename,
@@ -51,21 +57,22 @@ class FileEncryptionController extends Controller
 
         $encryptedFile = $request->file('file_to_decrypt');
         $encryptedFilename = $encryptedFile->getClientOriginalName();
-
         $downloadFilename = preg_replace('/\.gpg$/i', '', $encryptedFilename);
 
         if ($downloadFilename === $encryptedFilename) {
             return response()->json(['error' => 'Invalid file. A .gpg file is required.'], 422);
         }
 
-        $gpg = new gnupg();
+        // Use the helper method here as well
+        $gpg = $this->initializeGpg();
         $gpg->adddecryptkey(env('GPG_PRIVATE_KEY_ID'), env('GPG_PASSPHRASE'));
 
         $fileContent = File::get($encryptedFile->getPathName());
         $decrypted = $gpg->decrypt($fileContent);
 
         if ($decrypted === false) {
-            return response()->json(['error' => 'Decryption failed. Please check your key and passphrase.'], 422);
+            // Also improved error reporting here
+            return response()->json(['error' => 'Decryption failed. GPG error: ' . $gpg->geterror()], 422);
         }
 
         $decryptedFilePath = storage_path('app/' . uniqid('decrypted_', true));
